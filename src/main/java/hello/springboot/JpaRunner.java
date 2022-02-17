@@ -13,8 +13,8 @@ import javax.transaction.Transactional;
 @Transactional
 public class JpaRunner implements ApplicationRunner {
 
-    @PersistenceContext //JPA 어노테이션
-    EntityManager entityManager; //JPA에서 핵심적인 클래스
+    @PersistenceContext
+    EntityManager entityManager;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -22,8 +22,17 @@ public class JpaRunner implements ApplicationRunner {
         account.setUsername("spring");
         account.setPassword("hibernate");
 
-        //hibernate도 사용가능. hibernate의 핵심적인 API는 Session임
+        Study study = new Study();
+        study.setName("String Data JPA");
+
+        //양방향은 둘 다 설정
+ //       account.getStudies().add(study);
+ //       study.setOwner(account);
+        //일반적인 1:n 관계 사용법
+        account.addStudy(study);
+
         Session session = entityManager.unwrap(Session.class);
-        session.persist(account); //영속화(DB저장), 트랜잭션 필요.
+        session.save(account);
+        session.save(study);
     }
 }
