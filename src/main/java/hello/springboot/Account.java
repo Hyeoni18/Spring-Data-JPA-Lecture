@@ -3,11 +3,11 @@ package hello.springboot;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity(name = "myAccount") //테이블 이름.
+@Entity
 public class Account {
 
     @Id
-    @GeneratedValue //자동생성
+    @GeneratedValue
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -18,10 +18,10 @@ public class Account {
     @Temporal(TemporalType.DATE)
     private Date created = new Date();
 
-    @Transient //칼럼으로 매핑하지 않을 때 사용
-    private String yes;
+    @Embedded
+    @AttributeOverrides({@AttributeOverride(name="street", column = @Column(name="homeStreet"))})
+    private Address homeAddress;
 
-    //getter, setter 없이도 칼럼매핑 가능
     public Long getId() {
         return id;
     }
