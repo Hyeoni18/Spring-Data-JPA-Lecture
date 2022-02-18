@@ -18,21 +18,20 @@ public class JpaRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        Account account = new Account();
-        account.setUsername("spring");
-        account.setPassword("hibernate");
-
-        Study study = new Study();
-        study.setName("String Data JPA");
-
-        //양방향은 둘 다 설정
- //       account.getStudies().add(study);
- //       study.setOwner(account);
-        //일반적인 1:n 관계 사용법
-        account.addStudy(study);
+//        Post post = new Post();
+//        post.setTitle("Spring Data JPA");
+//
+//        Comment comment = new Comment();
+//        comment.setComment("Ing....");
+//        post.addComment(comment);
+//
+//        Comment comment1 = new Comment();
+//        comment1.setComment("Too....");
+//        post.addComment(comment1);
 
         Session session = entityManager.unwrap(Session.class);
-        session.save(account);
-        session.save(study);
+        //session.save(post);
+        Post post = session.get(Post.class, 1l);
+        session.delete(post);
     }
 }
