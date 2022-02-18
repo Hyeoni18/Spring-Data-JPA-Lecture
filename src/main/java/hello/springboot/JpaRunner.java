@@ -7,7 +7,12 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Component
 @Transactional
@@ -18,31 +23,8 @@ public class JpaRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-//        Post post = new Post();
-//        post.setTitle("Spring Data JPA");
-//
-//        Comment comment = new Comment();
-//        comment.setComment("Ing....");
-//        post.addComment(comment);
-//
-//        Comment comment1 = new Comment();
-//        comment1.setComment("Too....");
-//        post.addComment(comment1);
-
-        Session session = entityManager.unwrap(Session.class);
-//        session.save(post)
-        Post post = session.get(Post.class, 4l);
-        System.out.println("======================");
-        System.out.println(post.getTitle());
-
-        post.getComments().forEach( e -> {
-            System.out.println("-------------------------");
-            System.out.println(e.getComment());
-        });
-//        session.delete(post);
-//        Comment comment = session.get(Comment.class, 5l);
-//        System.out.println("=====================");
-//        System.out.println(comment.getComment());
-//        System.out.println(comment.getPost().getTitle());
+        List<Post> posts = entityManager.createNativeQuery("Select * from Post", Post.class)
+                .getResultList();
+        posts.forEach(System.out::println);
     }
 }

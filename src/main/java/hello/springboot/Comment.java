@@ -10,7 +10,7 @@ public class Comment {
 
     private String comment;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private Post post;
 
     public Long getId() {
