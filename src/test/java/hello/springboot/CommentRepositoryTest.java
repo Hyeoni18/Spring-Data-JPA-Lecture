@@ -9,9 +9,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.util.concurrent.ListenableFutureCallback;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,16 +29,28 @@ public class CommentRepositoryTest extends TestCase {
     CommentRepository commentRepository;
 
     @Test
-    public void crud() {
+    public void crud() throws ExecutionException, InterruptedException {
         this.createComment(100,"Spring Data JPA");
         this.createComment(10,"Hibernate Spring");
+        commentRepository.flush();
 
         PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "LikeCount")); //page 0부터 시작, 가져올 개수 10
-        //try catch로 받아서 사용해야 함. 닫아줘야 하기 때문
-        try(Stream<Comment> comments = commentRepository.findByCommentContainsIgnoreCase("spring", pageRequest)) {
-            Comment firstComment = comments.findFirst().get();
-            assertThat(firstComment.getLikeCount()).isEqualTo(100);
-        }
+
+        ListenableFuture<List<Comment>> future = commentRepository.findByCommentContainsIgnoreCase("Spring", pageRequest);
+        System.out.println("===========================");
+        System.out.println("is done? "+future.isDone());
+
+        future.addCallback(new ListenableFutureCallback<List<Comment>>() {
+            @Override
+            public void onFailure(Throwable throwable) {
+                System.out.println(throwable);
+            }
+            @Override
+            public void onSuccess(List<Comment> comments) {
+                System.out.println("=================");
+                System.out.println(comments.size());
+            }
+        });
     }
 
     private void createComment(int likeCount, String comment) {
