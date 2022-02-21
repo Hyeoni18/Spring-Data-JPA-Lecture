@@ -15,13 +15,13 @@ public class JpaRunner implements ApplicationRunner {
     @Autowired
     PostRepository postRepository;
 
-    @Autowired
-    Spring spring;
+//    @Autowired
+//    Spring spring;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
         postRepository.findAll().forEach(System.out::println);
         System.out.println("===================");
-        System.out.println(spring.getName());
+//        System.out.println(spring.getName());
     }
 }

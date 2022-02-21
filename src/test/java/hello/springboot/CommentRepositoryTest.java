@@ -29,7 +29,7 @@ public class CommentRepositoryTest extends TestCase {
         assertThat(comments).isEmpty(); //List는 Null이 나오지 않음.
         //콜렉션은 Null을 리턴하지 않고, 비어있는 콜렉션을 리턴.
 
-        commentRepository.save(null);
+ //       commentRepository.save(null);
 
     }
 }
