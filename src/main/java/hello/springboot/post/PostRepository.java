@@ -1,6 +1,6 @@
 package hello.springboot.post;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import hello.springboot.MyRepository;
 
-public interface PostRepository extends JpaRepository<Post, Long>, PostCustomRepository<Post> {
+public interface PostRepository extends MyRepository<Post, Long> {
 }
