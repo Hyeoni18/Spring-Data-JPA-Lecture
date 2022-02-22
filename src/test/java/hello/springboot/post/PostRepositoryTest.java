@@ -1,5 +1,6 @@
 package hello.springboot.post;
 
+import com.querydsl.core.types.Predicate;
 import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,6 +9,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,14 +39,25 @@ public class PostRepositoryTest extends TestCase {
     public void curd() {
         Post post = new Post();
         post.setTitle("Hibernate");
-
-        assertThat(postRepository.contains(post)).isFalse();
-
         postRepository.save(post.publish());
 
-        assertThat(postRepository.contains(post)).isTrue();
+        Predicate predicate = QPost.post.title.containsIgnoreCase("Hi");
+        Optional<Post> one = postRepository.findOne(predicate);
+        assertThat(one).isNotEmpty();
 
-        postRepository.delete(post);
-        postRepository.flush();
+        assertEquals(1, postRepository.findAll().size());
+        Optional<Post> nate = postRepository.findOne(QPost.post.title.contains("nate"));
+        assertTrue(nate.isPresent());
+        Optional<Post> jpa = postRepository.findOne(QPost.post.title.contains("jpa"));
+        assertTrue(jpa.isEmpty());
+    }
+
+    @Test
+    public void newCurd() {
+        Post post = new Post();
+        post.setTitle("Hibernate");
+        Post newPost = postRepository.save(post);
+
+        postRepository.contains(newPost);
     }
 }
