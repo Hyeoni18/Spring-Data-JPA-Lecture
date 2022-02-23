@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -67,7 +69,9 @@ public class PostControllerTest {
     public void findByTitle() {
         savePost();
 
-        List<Post> posts = postRepository.findByTitle("Spring Data JPA");
+  //      List<Post> posts = postRepository.findByTitle("Spring Data JPA", Sort.by("title")); //title 가능함. 포스트 엔티티의 프로퍼티니까.
+  //      List<Post> posts = postRepository.findByTitle("Spring Data JPA", Sort.by("LENGTH(title)")); //title 길이로 정렬을 해줘. error 발생. 이를 우회하려면 JpaSort 사용
+        List<Post> posts = postRepository.findByTitle("Spring Data JPA", JpaSort.unsafe("LENGTH(title)"));
         assertThat(posts.size()).isEqualTo(1);
     }
 
