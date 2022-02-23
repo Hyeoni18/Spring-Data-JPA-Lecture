@@ -10,6 +10,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -24,6 +27,16 @@ public class PostControllerTest {
 
     @Autowired
     PostRepository postRepository;
+
+    @Test
+    public void curd() {
+        Post post = new Post();
+        post.setTitle("JPA");
+        postRepository.save(post);
+
+        List<Post> posts = postRepository.findAll();
+        assertThat(posts.size()).isEqualTo(1);
+    }
 
     @Test
     public void getPost() throws Exception {
