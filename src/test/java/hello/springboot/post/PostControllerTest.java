@@ -54,4 +54,26 @@ public class PostControllerTest {
         List<Post> posts = postRepository.findAll(); //2.여기서. 데이터를 가져오려고 하네? 빨리 싱크해야겠다. 이게 persist 상태의 객체임.
         assertThat(posts.size()).isEqualTo(1);
     }
+
+    @Test
+    public void findByTitleStartWith() {
+        savePost();
+
+        List<Post> posts = postRepository.findByTitleStartsWith("Spring");
+        assertThat(posts.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void findByTitle() {
+        savePost();
+
+        List<Post> posts = postRepository.findByTitle("Spring Data JPA");
+        assertThat(posts.size()).isEqualTo(1);
+    }
+
+    private void savePost() {
+        Post post = new Post();
+        post.setTitle("Spring Data JPA");
+        postRepository.save(post);
+    }
 }
