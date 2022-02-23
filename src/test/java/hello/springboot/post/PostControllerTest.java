@@ -39,18 +39,26 @@ public class PostControllerTest {
 
     @Test
     public void getPosts() throws Exception {
-        Post post = new Post();
-        post.setTitle("JPA");
-        postRepository.save(post);
+        createPosts();
 
         mockMvc.perform(get("/posts/")
-                        .param("page","0") //page 파라미터는 0부터 시작함. 0이 첫 번째 페이지.
-                        .param("size","10") //한 페이지 몇 개씩 가져올지. 10개 가져올 거임.
+                        .param("page","3") //4번째 페이지 쿼리
+                        .param("size","10") //한 페이지 10개씩
                         .param("sort","created,desc") //정렬. 가장 최신부터.
                         .param("sort","title") //날짜가 같으면 다음 정렬 옵션은 타이틀.
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].title").value("JPA"));
+    }
+
+    private void createPosts() {
+        int postsCount = 100;
+        while(postsCount > 0) {
+            Post post = new Post();
+            post.setTitle("JPA");
+            postRepository.save(post);
+            postsCount--;
+        }
     }
 }
