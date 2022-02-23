@@ -1,8 +1,6 @@
 package hello.springboot.post;
 
-import hello.springboot.CustomRepository;
-import hello.springboot.MyRepository;
-import org.springframework.data.querydsl.QuerydslPredicateExecutor;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PostRepository extends CustomRepository<Post, Long>, QuerydslPredicateExecutor<Post> {
+public interface PostRepository extends JpaRepository<Post, Long> {
 }

@@ -1,29 +1,25 @@
 package hello.springboot.post;
 
-import org.springframework.data.domain.AbstractAggregateRoot;
-
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-public class Post extends AbstractAggregateRoot<Post> {
+public class Post {
 
-    @Id @GeneratedValue
-    private long id;
+    @Id
+    @GeneratedValue
+    private Long id;
 
     private String title;
-
-    @Lob
-    private String content;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date created;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -35,25 +31,11 @@ public class Post extends AbstractAggregateRoot<Post> {
         this.title = title;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
     public Date getCreated() {
         return created;
     }
 
     public void setCreated(Date created) {
         this.created = created;
-    }
-
-    public Post publish() {
-        //퍼블리시 할 때 여기서 만들면 되는거야
-        this.registerEvent(new PostPublishedEvent(this)); //상속받은 클래스에서 제공되는 메소드. 안에 이벤트를 만들어서 넣어주면 됨. 끝임.
-        return this;
     }
 }
