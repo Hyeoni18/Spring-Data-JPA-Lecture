@@ -5,6 +5,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.*;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -16,7 +18,7 @@ import static hello.springboot.post.CommentSpecs.isBest;
 import static hello.springboot.post.CommentSpecs.isGood;
 
 @RunWith(SpringRunner.class)
-@DataJpaTest
+@SpringBootTest
 public class CommentRepositoryTest {
 
     @Autowired

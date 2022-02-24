@@ -1,8 +1,17 @@
 package hello.springboot.post;
 
+import hello.springboot.post.Account;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class) //Auditing을 사용할 엔티티에 선언
 public class Comment {
 
     @Id @GeneratedValue
@@ -18,6 +27,20 @@ public class Comment {
     private int down;
 
     private boolean best;
+
+    @CreatedDate
+    private Date created;
+
+    @CreatedBy
+    @ManyToOne
+    private Account createdBy; //누가 만들었는지
+
+    @LastModifiedDate
+    private Date updated;
+
+    @LastModifiedBy
+    @ManyToOne
+    private Account updatedBy;
 
     public int getUp() {
         return up;
@@ -65,5 +88,11 @@ public class Comment {
 
     public void setPost(Post post) {
         this.post = post;
+    }
+
+    @PrePersist
+    public void perPersist() {
+        System.out.println("Pre Persist is called");
+//        this.createdBy = 여기서도 설정이 가능함
     }
 }
