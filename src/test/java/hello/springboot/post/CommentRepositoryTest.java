@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
 import java.util.Optional;
 
 @RunWith(SpringRunner.class)
@@ -37,8 +38,23 @@ public class CommentRepositoryTest {
 
     @Test
     public void getCommentTwo() {
-        commentRepository.getById(1l); //EntityGraph사용
-        System.out.println("================================");
-        commentRepository.findById(1l); //기본제공, 설정한 거 없음
+        Post post = new Post();
+        post.setTitle("JPA");
+        Post savedPost = postRepository.save(post);
+
+        Comment comment = new Comment();
+        comment.setPost(savedPost);
+        comment.setUp(10);
+        comment.setDown(1);
+        comment.setComment("JPA COMMENT");
+        commentRepository.save(comment);
+
+        commentRepository.findByPost_Id(savedPost.getId(), CommentSummary.class).forEach( e -> {
+            System.out.println(e.getVotes());
+        });
+
+        commentRepository.findByPost_Id(savedPost.getId(), CommentOnly.class).forEach( e -> {
+            System.out.println(e.getComment());
+        });
     }
 }

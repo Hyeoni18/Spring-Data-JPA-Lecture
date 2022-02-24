@@ -2,7 +2,6 @@ package hello.springboot.post;
 
 import javax.persistence.*;
 
-@NamedEntityGraph(name = "Comment.post", attributeNodes = @NamedAttributeNode("post"))
 @Entity
 public class Comment {
 
@@ -11,8 +10,38 @@ public class Comment {
 
     private String comment;
 
-    @ManyToOne(fetch = FetchType.LAZY) //기본설정. Comment정보 가져올 때 Post정보도 같이 가져옴. LAZY로 바꾸면 Comment만 가져옴.
+    @ManyToOne(fetch = FetchType.LAZY)
     private Post post;
+
+    private int up;
+
+    private int down;
+
+    private boolean best;
+
+    public int getUp() {
+        return up;
+    }
+
+    public void setUp(int up) {
+        this.up = up;
+    }
+
+    public int getDown() {
+        return down;
+    }
+
+    public void setDown(int down) {
+        this.down = down;
+    }
+
+    public boolean isBest() {
+        return best;
+    }
+
+    public void setBest(boolean best) {
+        this.best = best;
+    }
 
     public Long getId() {
         return id;
