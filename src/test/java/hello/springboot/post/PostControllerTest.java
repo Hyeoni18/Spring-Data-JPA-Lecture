@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -75,9 +76,19 @@ public class PostControllerTest {
         assertThat(posts.size()).isEqualTo(1);
     }
 
-    private void savePost() {
+    private Post savePost() {
         Post post = new Post();
         post.setTitle("Spring Data JPA");
-        postRepository.save(post);
+        return postRepository.save(post);
     }
+
+    @Test
+    public void updateTtile() {
+        Post post = savePost();
+        post.setTitle("hibernate");
+
+        List<Post> all = postRepository.findAll();
+        assertThat(all.get(0).getTitle()).isEqualTo("hibernate");
+    }
+
 }
