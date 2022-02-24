@@ -19,6 +19,9 @@ public class Comment {
 
     private String comment;
 
+    @Enumerated(value = EnumType.STRING) //기본값이 오디널인데, STRING으로 변경해서 사용해야 안전함.
+    private CommentStatus commentStatus;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Post post;
 
